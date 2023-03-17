@@ -39,7 +39,6 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Row #</th>
                 <th scope="col">Name</th>
                 <th scope="col">ID</th>
                 <th scope="col">Points</th>
@@ -48,57 +47,47 @@
         </thead>
         <tbody>
             <tr id="Steve_Smith/211/80">
-                <td>1</td>
                 <td>Steve Smith</td>
                 <td>211</td>
                 <td>80</td>
                 <td>
                     <button type="button" class="btn btn-danger deleteButton" id="Delete/Steve_Smith/211/80">Delete</button>
-                    <button type="button" class="btn btn-primary updateButton" id="Update/Steve_Smith/211/80">Update</button>
                 </td>
             </tr>
 
             <tr id="Jian_Wong/122/92">
-                <td>2</td>
                 <td>Jian Wong</td>
                 <td>122</td>
                 <td>92</td>
                 <td>
                     <button type="button" class="btn btn-danger deleteButton" id="Delete/Jian_Wong/122/92">Delete</button>
-                    <button type="button" class="btn btn-primary updateButton" id="Update/Jian_Wong/122/92">Update</button>
                 </td>
             </tr>
 
             <tr id="Chris_Peterson/213/91">
-                <td>3</td>
                 <td>Chris Peterson</td>
                 <td>213</td>
                 <td>91</td>
                 <td>
                     <button type="button" class="btn btn-danger deleteButton" id="Delete/Chris_Peterson/213/91">Delete</button>
-                    <button type="button" class="btn btn-primary updateButton" id="Update/Chris_Peterson/213/91">Update</button>
                 </td>
             </tr>
 
             <tr id="Sai_Patel/524/94">
-                <td>4</td>
                 <td>Sai Patel</td>
                 <td>524</td>
                 <td>94</td>
                 <td>
                     <button type="button" class="btn btn-danger deleteButton" id="Delete/Sai_Patel/524/94">Delete</button>
-                    <button type="button" class="btn btn-primary updateButton" id="Update/Sai_Patel/524/94">Update</button>
                 </td>
             </tr>
 
             <tr id="Andrew_Whitehead/425/99">
-                <td>5</td>
                 <td>Andrew Whitehead</td>
                 <td>425</td>
                 <td>99</td>
                 <td>
                     <button type="button" class="btn btn-danger deleteButton" id="Delete/Andrew_Whitehead/425/99">Delete</button>
-                    <button type="button" class="btn btn-primary updateButton" id="Update/Andrew_Whitehead/425/99">Update</button>
                 </td>
             </tr>
         </tbody>
@@ -186,13 +175,11 @@
                 
                 tbodyEl.innerHTML += `
                     <tr id="${parseInputs(name, id, points)}">
-                        <td>${numRows}</td>
                         <td>${name}</td>
                         <td>${id}</td>
                         <td>${points}</td>
                         <td>
                             <button type="button" class="btn btn-danger deleteButton" id="${deleteID}">Delete</button>
-                            <button type="button" class="btn btn-primary updateButton" id="${deleteID}">Update</button>
                         </td>
                     </tr>
                 `;

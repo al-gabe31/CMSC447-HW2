@@ -1,6 +1,6 @@
-/* .deleteButton {
-    margin-left: 40px;
-} */
+#deleteButton {
+    display: none;
+}
 
 #actionButtons {
     margin-top: 10px;
