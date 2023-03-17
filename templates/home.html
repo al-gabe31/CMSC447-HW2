@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>Home Page</title>
+{% endblock title %}
+
+{% block content %}
+    <h1 class="w-50 p-3">Simple CURD by Gabe Aquino</h1>
+    <div class="w-25 p-3">
+        <form>
+            <div class="input-group-prepend">
+                <!-- <label for="name">Name:</label>
+                <input class="float-right" type="text" name="name" id="name"/> -->
+
+                <span class="input-group-text" id="input1">Name:</span>
+                <input type="text" class="form-control" id="name"/>
+            </div>
+            <div class="input-group-prepend">
+                <!-- <label for="id">Id:</label>
+                <input class="float-right" type="text" name="id" id="id"/> -->
+
+                <span class="input-group-text" id="input2">ID:</span>
+                <input type="text" min="0" step="1" class="form-control" id="id"/>
+            </div>
+            <div class="input-group-prepend">
+                <!-- <label for="Points">Points:</label>
+                <input class="float-right" type="text" name="Points" id="Points"/> -->
+
+                <span class="input-group-text" id="input3">Points:</span>
+                <input type="text" min="0" step="1" class="form-control" id="points"/>
+            </div>
+        </form>
+        <div id="actionButtons">
+          <button type="button" class="btn btn-success actionButtons" id="addButton">Add</button>
+          <button type="button" class="btn btn-info" id="searchButton">Search</button>
+          <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Row #</th>
+                <th scope="col">Name</th>
+                <th scope="col">ID</th>
+                <th scope="col">Points</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="Steve_Smith/211/80">
+                <td>1</td>
+                <td>Steve Smith</td>
+                <td>211</td>
+                <td>80</td>
+                <td>
+                    <button type="button" class="btn btn-danger deleteButton" id="Delete/Steve_Smith/211/80">Delete</button>
+                    <button type="button" class="btn btn-primary updateButton" id="Update/Steve_Smith/211/80">Update</button>
+                </td>
+            </tr>
+
+            <tr id="Jian_Wong/122/92">
+                <td>2</td>
+                <td>Jian Wong</td>
+                <td>122</td>
+                <td>92</td>
+                <td>
+                    <button type="button" class="btn btn-danger deleteButton" id="Delete/Jian_Wong/122/92">Delete</button>
+                    <button type="button" class="btn btn-primary updateButton" id="Update/Jian_Wong/122/92">Update</button>
+                </td>
+            </tr>
+
+            <tr id="Chris_Peterson/213/91">
+                <td>3</td>
+                <td>Chris Peterson</td>
+                <td>213</td>
+                <td>91</td>
+                <td>
+                    <button type="button" class="btn btn-danger deleteButton" id="Delete/Chris_Peterson/213/91">Delete</button>
+                    <button type="button" class="btn btn-primary updateButton" id="Update/Chris_Peterson/213/91">Update</button>
+                </td>
+            </tr>
+
+            <tr id="Sai_Patel/524/94">
+                <td>4</td>
+                <td>Sai Patel</td>
+                <td>524</td>
+                <td>94</td>
+                <td>
+                    <button type="button" class="btn btn-danger deleteButton" id="Delete/Sai_Patel/524/94">Delete</button>
+                    <button type="button" class="btn btn-primary updateButton" id="Update/Sai_Patel/524/94">Update</button>
+                </td>
+            </tr>
+
+            <tr id="Andrew_Whitehead/425/99">
+                <td>5</td>
+                <td>Andrew Whitehead</td>
+                <td>425</td>
+                <td>99</td>
+                <td>
+                    <button type="button" class="btn btn-danger deleteButton" id="Delete/Andrew_Whitehead/425/99">Delete</button>
+                    <button type="button" class="btn btn-primary updateButton" id="Update/Andrew_Whitehead/425/99">Update</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <script>
+        let numRows = 5;
+        let rowLastAdded = null;
+        let rowLastSearched = null;
+
+        // Clears the inputs
+        function clearInputs() {
+            document.getElementById("name").value = '';
+            document.getElementById("id").value = '';
+            document.getElementById("points").value = '';
+        }
+        
+        // Returns true if a string contains a number
+        function containsNumbers(string) {
+            let flag = false;
+            
+            for(let i = 0; i < string.length; i++) {
+                if(string[i] === "0" || string[i] === "1" || string[i] === "2" || string[i] === "3" || string[i] === "4" || string[i] === "5" || string[i] === "6" || string[i] === "7" || string[i] === "8" || string[i] === "9") {
+                    flag = true;
+                }
+            }
+            
+            return flag;
+        }
+
+        // Returns true if a string all contains integers
+        function isInteger(string) {
+            let flag = true;
+            
+            for(let i = 0; i < string.length; i++) {
+                if(string[i] != "0" && string[i] != "1" && string[i] != "2" && string[i] != "3" && string[i] != "4" && string[i] != "5" && string[i] != "6" && string[i] != "7" && string[i] != "8" && string[i] != "9" && string[i]) {
+                    flag = false;
+                }
+            }
+            
+            return flag;
+        }
+
+        // Generates an id based on the inputs
+        function parseInputs(name, id, points) {
+            let output = name.split(' ').join('_') + "/" + id + "/" + points;
+            return output;
+        }
+
+        function resetRowLastSearched() {
+            if(rowLastSearched != null) {
+                    rowLastSearched.style.backgroundColor = "white";
+                    rowLastSearched.style.color = "#212121";
+            }
+        }
+
+        const formEl = document.querySelector("form");
+        const tbodyEl = document.querySelector("tbody");
+        const tableEl = document.querySelector("table");
+
+        const addEl = document.querySelector("#addButton");
+        const searchEl = document.querySelector("#searchButton");
+        const deleteEl = document.querySelector("#deleteButton");
+
+        function addRow(e) {
+            e.preventDefault();
+
+            // Get data from inputs
+            const name = document.getElementById("name").value;
+            const id = document.getElementById("id").value;
+            const points = document.getElementById("points").value;
+
+            let parsed = parseInputs(name, id, points);
+            let deleteID = "Delete/" + parsed;
+            let updateID = "Update/" + parsed;
+
+            // Validates inputs
+            // - Name should be all letters and no numbers
+            // - ID should be a positive integer
+            // - Points should be a positive integer
+            if(!containsNumbers(name) && name.length != 0 && isInteger(id) && id.length != 0 && isInteger(points) && points.length != 0) {
+                clearInputs();
+                resetRowLastSearched();
+                numRows++;
+                
+                tbodyEl.innerHTML += `
+                    <tr id="${parseInputs(name, id, points)}">
+                        <td>${numRows}</td>
+                        <td>${name}</td>
+                        <td>${id}</td>
+                        <td>${points}</td>
+                        <td>
+                            <button type="button" class="btn btn-danger deleteButton" id="${deleteID}">Delete</button>
+                            <button type="button" class="btn btn-primary updateButton" id="${deleteID}">Update</button>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                alert("!!!ERROR!!!\n- NAME has to be all letters\n- ID has to be a positive integer\n- POINTS has to be a positive integer")
+            }
+        }
+
+        function searchRow(e) {
+            // Get data from inputs
+            const name = document.getElementById("name").value;
+            const id = document.getElementById("id").value;
+            const points = document.getElementById("points").value;
+
+            let parsed = parseInputs(name, id, points);
+
+            if(document.contains(document.getElementById(parsed))) {
+                clearInputs();
+                document.getElementById(parsed).scrollIntoView();
+
+                // Highlights the searched element
+                resetRowLastSearched();
+                rowLastSearched = document.getElementById(parsed);
+                rowLastSearched.style.backgroundColor = "#4CAF50";
+                rowLastSearched.style.color = "white";
+            } else {
+                alert("Combination Not Found!");
+            }
+        }
+
+        function deleteRow(e) {
+            // Get data from inputs
+            const name = document.getElementById("name").value;
+            const id = document.getElementById("id").value;
+            const points = document.getElementById("points").value;
+
+            let parsed = parseInputs(name, id, points);
+
+            if(document.contains(document.getElementById(parsed))) {
+                clearInputs();
+                numRows--;
+                document.getElementById(parsed).remove();
+            } else {
+                alert("Combination Not Found!");
+            }
+        }
+
+        function onDeleteRow(e) {
+            if(!e.target.classList.contains("deleteButton")) {
+                return;
+            }
+
+            const button = e.target;
+            button.closest("tr").remove();
+        }
+
+        addEl.addEventListener("click", addRow);
+        searchEl.addEventListener("click", searchRow);
+        deleteEl.addEventListener("click", deleteRow);
+
+        tableEl.addEventListener("click", onDeleteRow);
+    </script>
+{% endblock content %}
